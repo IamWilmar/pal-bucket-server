@@ -15,9 +15,9 @@ const existEmail = async (email = '') => {
     };
 }
 
-const existUserById = async (id = '') => {
+const existUserById = async (id) => {
     const existUser = await User.findById(id);
-    if(existUser){
+    if(!existUser){
         throw new Error(`The user id ${id}, does NOT exist`);
     };
 }

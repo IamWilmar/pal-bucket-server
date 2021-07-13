@@ -8,14 +8,6 @@ const bcryptjs = require('bcryptjs');
 const postUser = async (req, res = response ) => {
     const {name, email, password, role} = req.body;
     const user = new User({ name, email, password, role });
-    //Verify fi email exists
-    // const existEmail = await User.findOne({email});
-    // if(existEmail){
-    //     return res.status(400).json({
-    //         msg: "Email already used"
-    //     });
-    // }
-    //Encrypt password
     const salt = bcryptjs.genSaltSync(10);
     user.password = bcryptjs.hashSync(password, salt);
     await user.save();
@@ -40,23 +32,35 @@ const putUser =  async (req, res= response ) => {
     });
 }
 
-const getUser = (req, res= response) => {
-    res.json({
-        ok:true,
-        msg: 'get Users Controller'
+const getUser = async (req, res= response) => {
+    const{ limit = 5, desde =  0 } = req.query;
+    const query = {status: true};
+
+    const [total, users] = await Promise.all([
+        User.countDocuments(query),
+        User.find(query)
+        .skip(Number(desde))
+        .limit(Number(limit)),
+    ]);
+
+    return res.json({
+        total,
+        users
     });
 }
 
 
 
-const deleteUser = (req, res) => {
-    res.json({
-        ok:true,
-        msg: 'delete done controller'
+const deleteUser = async (req, res) => {
+    const{id} = req.params;
+    const user = await User.findByIdAndUpdate(id, {status: false}, {new:true});
+    return res.json({
+        user
     });
 }
 
 const patchUser = (req, res) => {
+    const{id} = req.params;
     res.json({
         ok:true,
         msg: 'patch done controller'
