@@ -23,6 +23,7 @@ const validateJWT = async (req, res=response, next) => {
         req.user = user;
         next();
     }catch(err){
+        console.log(err);
         res.status(401).json({
             msg: 'Token sent is not valid'
         });
