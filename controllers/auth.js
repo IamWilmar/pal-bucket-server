@@ -21,6 +21,7 @@ const login = async (req, res = response) => {
             });
         }
 
+    
         //Verificar contraseña
         const validPassword = bcryptjs.compareSync(password, user.password);
         if(!validPassword){
