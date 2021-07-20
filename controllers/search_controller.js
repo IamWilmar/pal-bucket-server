@@ -94,8 +94,6 @@ const search = (req, res = response) => {
         case "products":
             searchProducts(words, res);
         break;
-        case "roles":
-        break;
         default: 
             res.status(500).json({
                 msg: "Please send a collection"
