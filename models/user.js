@@ -14,9 +14,15 @@ const UserSchema = Schema({
         type: String,
         require: [true, "The password is required"]
     },
-    image: {
-        type: String
+    description: {type: String},
+    age: { type: String },
+    gender: { 
+        type: String,
+        default: 'N',
+        enum: ['F', 'M', 'O', 'N']
     },
+    country: { type: String },
+    image: { type: String },
     role: {
         type: String,
         require: [true, "The role is required"],
